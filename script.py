@@ -2,23 +2,21 @@ import vdf
 import os
 import utils
 
-# TODO: figure out how to handle subdirectories inside console roms folders
-# TODO: check by file type for proper dll rather than path
-
 emulators = {
-    "D:\\Emulation\\ROMs\\GameBoy": "D:\\Emulation\\Emulators\\RetroArch\\cores\\mgba_libretro.dll",
-    "D:\\Emulation\\ROMs\\GameBoy Advance": "D:\\Emulation\\Emulators\\RetroArch\\cores\\mgba_libretro.dll",
-    "D:\\Emulation\\ROMs\\GameBoy Color": "D:\\Emulation\\Emulators\\RetroArch\\cores\\mgba_libretro.dll",
-    "D:\\Emulation\\ROMs\\GameCube": {},
-    "D:\\Emulation\\ROMs\\Nintendo 64": "D:\\Emulation\\Emulators\\RetroArch\\cores\\mupen64plus_next_libretro.dll",
-    "D:\\Emulation\\ROMs\\Nintendo DS": "D:\\Emulation\\Emulators\\RetroArch\\cores\\melonds_libretro.dll",
-    "D:\\Emulation\\ROMs\\Nintendo Entertainment System": "D:\\Emulation\\Emulators\\RetroArch\\cores\\mesen_libretro.dll",
-    "D:\\Emulation\\ROMs\\Nintendo Wii": {},
-    "D:\\Emulation\\ROMs\\PlayStation": "D:\\Emulation\\Emulators\\RetroArch\\cores\\swanstation_libretro.dll",
-    "D:\\Emulation\\ROMs\\PS2": {},
-    "D:\\Emulation\\ROMs\\Sega Dreamcast": "D:\\Emulation\\Emulators\\RetroArch\\cores\\flycast_libretro.dll",
-    "D:\\Emulation\\ROMs\\Sega Genesis": "D:\\Emulation\\Emulators\\RetroArch\\cores\\genesis_plus_gx_libretro.dll",
-    "D:\\Emulation\\ROMs\\Super Nintendo Entertainment System": "D:\\Emulation\\Emulators\\RetroArch\\cores\\snes9x_libretro.dll"
+    "gb": "D:\\Emulation\\Emulators\\RetroArch\\cores\\mgba_libretro.dll",
+    "gba": "D:\\Emulation\\Emulators\\RetroArch\\cores\\mgba_libretro.dll",
+    "gbc": "D:\\Emulation\\Emulators\\RetroArch\\cores\\mgba_libretro.dll",
+    "rvz": {}, # gamecube
+    "z64": "D:\\Emulation\\Emulators\\RetroArch\\cores\\mupen64plus_next_libretro.dll",
+    "nds": "D:\\Emulation\\Emulators\\RetroArch\\cores\\melonds_libretro.dll",
+    "nes": "D:\\Emulation\\Emulators\\RetroArch\\cores\\mesen_libretro.dll",
+    "rvz": {}, # wii
+    "m3u": "D:\\Emulation\\Emulators\\RetroArch\\cores\\swanstation_libretro.dll", # check if this actually works
+    "iso": {}, # ps2, also supports other file types, look into that
+    # "D:\\Emulation\\ROMs\\Sega Dreamcast": "D:\\Emulation\\Emulators\\RetroArch\\cores\\flycast_libretro.dll",
+    # dreamcast, multi-disc games, figure that shit out
+    "md": "D:\\Emulation\\Emulators\\RetroArch\\cores\\genesis_plus_gx_libretro.dll",
+    "sfc": "D:\\Emulation\\Emulators\\RetroArch\\cores\\snes9x_libretro.dll"
 }
 
 def scrape_games():
@@ -26,22 +24,33 @@ def scrape_games():
     appid_counter = -128908944
     d = {"shortcuts": {}}
     for root, dirs, files in os.walk("D:\\Emulation\\ROMs"):
-        dll = emulators.get(root)
-        if root == "D:\\Emulation\\ROMs\\PS2" or root == "D:\\Emulation\\ROMs\\Nintendo Wii" or root == "D:\\Emulation\\ROMs\\GameCube" or root == "D:\\Emulation\\ROMs\\GameBoy Advance" or root == "D:\\Emulation\\ROMs\\PlayStation" or root == "D:\\Emulation\\ROMs\\GameBoy Advance\\Romhacks":
-            continue
         for file in files:
+            if not file.split(".")[1] in emulators.keys():
+                continue
+
             d["shortcuts"].update(utils.generateEntry(
                 entryid=str(counter),
                 appid=appid_counter - 1,
                 name=file.split("(")[0].strip(),
-                target= '"D:\\Emulation\\Emulators\\RetroArch\\retroarch.exe" '
-                        f'-L "{dll}" '
-                        f'"{root}\\{file}"',
+                target= fetch_target(root, file),
                 startdir=root
             ))
+
             counter += 1
             appid_counter -= 1
     return d
+
+def fetch_target(root, file):
+    file_extension = file.split(".")[1]
+    if file_extension in emulators.keys() and file_extension == "rvz":
+        return f'"D:\\Emulation\\Emulators\\Dolphin\\Dolphin.exe" "{root}\\{file}" "/f"'
+    # if file_extension in emulators.keys() and file_extension == "iso":
+    #     pass
+
+    # default to retroarch
+    if file_extension in emulators.keys():
+        return f'"D:\\Emulation\\Emulators\\RetroArch\\retroarch.exe" -L "{emulators.get(file.split(".")[1])}" "{root}\\{file}"'
+
 
 def write_to_steam():
     new_shortcuts = scrape_games()
