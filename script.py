@@ -2,19 +2,19 @@ import vdf
 import os
 import utils
 
+# TODO: support for all pcsx2 compatible file extensions
+# TODO: figure out what to do with multi-disc games
+
 emulators = {
     "gb": "D:\\Emulation\\Emulators\\RetroArch\\cores\\mgba_libretro.dll",
     "gba": "D:\\Emulation\\Emulators\\RetroArch\\cores\\mgba_libretro.dll",
     "gbc": "D:\\Emulation\\Emulators\\RetroArch\\cores\\mgba_libretro.dll",
-    "rvz": {}, # gamecube
     "z64": "D:\\Emulation\\Emulators\\RetroArch\\cores\\mupen64plus_next_libretro.dll",
     "nds": "D:\\Emulation\\Emulators\\RetroArch\\cores\\melonds_libretro.dll",
     "nes": "D:\\Emulation\\Emulators\\RetroArch\\cores\\mesen_libretro.dll",
-    "rvz": {}, # wii
-    "m3u": "D:\\Emulation\\Emulators\\RetroArch\\cores\\swanstation_libretro.dll", # check if this actually works
-    "iso": {}, # ps2, also supports other file types, look into that
-    # "D:\\Emulation\\ROMs\\Sega Dreamcast": "D:\\Emulation\\Emulators\\RetroArch\\cores\\flycast_libretro.dll",
-    # dreamcast, multi-disc games, figure that shit out
+    "m3u": "D:\\Emulation\\Emulators\\RetroArch\\cores\\swanstation_libretro.dll",
+    "iso": {}, # ps2
+    "D:\\Emulation\\ROMs\\Sega Dreamcast": "D:\\Emulation\\Emulators\\RetroArch\\cores\\flycast_libretro.dll",
     "md": "D:\\Emulation\\Emulators\\RetroArch\\cores\\genesis_plus_gx_libretro.dll",
     "sfc": "D:\\Emulation\\Emulators\\RetroArch\\cores\\snes9x_libretro.dll"
 }
