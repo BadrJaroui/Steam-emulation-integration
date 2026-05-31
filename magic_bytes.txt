@@ -1,0 +1,10 @@
+-- GAMECUBE --
+magic_offset = 0x1c
+magic_bytes = b'\xc23\x9f'
+
+-- WII --
+https://wiibrew.org/wiki//dev/di
+magic_offset = 0x18
+magic_bytes = b']\x1c\x9e'
+0x5D1C9EA3
+

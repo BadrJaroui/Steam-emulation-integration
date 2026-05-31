@@ -1,23 +1,52 @@
 import vdf
 import os
 import utils
+import pycdlib
+import pyisotools
 
 # TODO: support for all pcsx2 compatible file extensions
 # TODO: figure out what to do with multi-disc games
+# TODO: paths as user input, one for emulator locations, one for retroarch cores locations, one for roms
+# TODO: refactor fetch_core
+# TODO: find a way to identify game's system that's more reliable than checking folder/file extension
+# TODO: check for m3u files: if exists, ignore cue files in folder. if not, use cue file
 
-emulators = {
-    "gb": "D:\\Emulation\\Emulators\\RetroArch\\cores\\mgba_libretro.dll",
-    "gba": "D:\\Emulation\\Emulators\\RetroArch\\cores\\mgba_libretro.dll",
-    "gbc": "D:\\Emulation\\Emulators\\RetroArch\\cores\\mgba_libretro.dll",
-    "z64": "D:\\Emulation\\Emulators\\RetroArch\\cores\\mupen64plus_next_libretro.dll",
-    "nds": "D:\\Emulation\\Emulators\\RetroArch\\cores\\melonds_libretro.dll",
-    "nes": "D:\\Emulation\\Emulators\\RetroArch\\cores\\mesen_libretro.dll",
-    "m3u": "D:\\Emulation\\Emulators\\RetroArch\\cores\\swanstation_libretro.dll",
-    "iso": {}, # ps2
-    "D:\\Emulation\\ROMs\\Sega Dreamcast": "D:\\Emulation\\Emulators\\RetroArch\\cores\\flycast_libretro.dll",
-    "md": "D:\\Emulation\\Emulators\\RetroArch\\cores\\genesis_plus_gx_libretro.dll",
-    "sfc": "D:\\Emulation\\Emulators\\RetroArch\\cores\\snes9x_libretro.dll"
-}
+file_extensions = [
+    "gb",
+    "gba",
+    "gbc",
+    "z64",
+    "nds",
+    "nes",
+    "m3u",
+    "cue",
+    "md",
+    "sfc"
+]
+
+def fetch_core(file_extension, root):
+    if file_extension == "m3u" or file_extension == "cue":
+        if "dreamcast" in root.lower():
+            return "D:\\Emulation\\Emulators\\RetroArch\\cores\\flycast_libretro.dll"
+        if "playstation" in root.lower():
+            return "D:\\Emulation\\Emulators\\RetroArch\\cores\\swanstation_libretro.dll"
+
+    if file_extension == "gb":
+        return "D:\\Emulation\\Emulators\\RetroArch\\cores\\mgba_libretro.dll"
+    if file_extension == "gba":
+        return "D:\\Emulation\\Emulators\\RetroArch\\cores\\mgba_libretro.dll"
+    if file_extension == "gbc":
+        return "D:\\Emulation\\Emulators\\RetroArch\\cores\\mgba_libretro.dll"
+    if file_extension == "z64":
+        return "D:\\Emulation\\Emulators\\RetroArch\\cores\\mupen64plus_next_libretro.dll"
+    if file_extension == "nds":
+        return "D:\\Emulation\\Emulators\\RetroArch\\cores\\melonds_libretro.dll"
+    if file_extension == "nes":
+        return "D:\\Emulation\\Emulators\\RetroArch\\cores\\mesen_libretro.dll"
+    if file_extension == "md":
+        return "D:\\Emulation\\Emulators\\RetroArch\\cores\\genesis_plus_gx_libretro.dll"
+    if file_extension == "sfc":
+        return "D:\\Emulation\\Emulators\\RetroArch\\cores\\snes9x_libretro.dll"
 
 def scrape_games():
     counter = 0
@@ -25,7 +54,7 @@ def scrape_games():
     d = {"shortcuts": {}}
     for root, dirs, files in os.walk("D:\\Emulation\\ROMs"):
         for file in files:
-            if not file.split(".")[1] in emulators.keys():
+            if not file.split(".")[1] in file_extensions:
                 continue
 
             d["shortcuts"].update(utils.generateEntry(
@@ -42,14 +71,12 @@ def scrape_games():
 
 def fetch_target(root, file):
     file_extension = file.split(".")[1]
-    if file_extension in emulators.keys() and file_extension == "rvz":
+    if file_extension in file_extensions and file_extension == "rvz":
         return f'"D:\\Emulation\\Emulators\\Dolphin\\Dolphin.exe" "{root}\\{file}" "/f"'
-    # if file_extension in emulators.keys() and file_extension == "iso":
-    #     pass
-
-    # default to retroarch
-    if file_extension in emulators.keys():
-        return f'"D:\\Emulation\\Emulators\\RetroArch\\retroarch.exe" -L "{emulators.get(file.split(".")[1])}" "{root}\\{file}"'
+    if file_extension in file_extensions and file_extension == "iso":
+        return f'"D:\Emulation\Emulators\PCSX2\pcsx2-qt.exe" "{root}\\{file}" -nogui -fullscreen'
+    if file_extension in file_extensions:
+        return f'"D:\\Emulation\\Emulators\\RetroArch\\retroarch.exe" -L "{fetch_core(file.split(".")[1], root)}" "{root}\\{file}"'
 
 
 def write_to_steam():
