@@ -7,7 +7,7 @@ from verify_iso import check_iso_system
 # TODO: figure out what to do with multi-disc games
 # TODO: paths as user input, one for emulator locations, one for retroarch cores locations, one for roms
 # TODO: refactor fetch_core
-# TODO: find a way to identify game's system that's more reliable than checking folder/file extension
+# DONE: find a way to identify game's system that's more reliable than checking folder/file extension
 # TODO: check for m3u files: if exists, ignore cue files in folder. if not, use cue file
 
 file_extensions = [
@@ -25,6 +25,7 @@ file_extensions = [
     "iso"
 ]
 
+# turn this garbage into a dictionary
 def fetch_core(file_extension, root):
     if file_extension == "m3u" or file_extension == "cue":
         if "dreamcast" in root.lower():
@@ -61,7 +62,7 @@ def scrape_games():
             d["shortcuts"].update(utils.generateEntry(
                 entryid=str(counter),
                 appid=appid_counter - 1,
-                name=parse_game_name(file),
+                name=utils.parse_game_name(file),
                 target= fetch_target(root, file),
                 startdir=root
             ))
@@ -84,14 +85,6 @@ def fetch_target(root, file):
 
     if file_extension in file_extensions:
         return f'"D:\\Emulation\\Emulators\\RetroArch\\retroarch.exe" -L "{fetch_core(file.split(".")[1], root)}" "{root}\\{file}"'
-
-def parse_game_name(file_name):
-    if "(" in file_name:
-        return file_name.split("(")[0].strip()
-    if "[" in file_name:
-        return file_name.split("[")[0].strip()
-    if "." in file_name:
-        return file_name.split(".")[0].strip()
 
 def write_to_steam():
     new_shortcuts = scrape_games()

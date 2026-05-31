@@ -27,6 +27,14 @@ def generateEntry(entryid, appid, name, target, startdir):
 
     return format
 
+def parse_game_name(file_name):
+    if "(" in file_name:
+        return file_name.split("(")[0].strip()
+    if "[" in file_name:
+        return file_name.split("[")[0].strip()
+    if "." in file_name:
+        return file_name.split(".")[0].strip()
+
 def readData():
     with open("C:/Program Files (x86)/Steam/userdata/410602222/config/shortcuts.vdf", "rb") as f:
         data = vdf.binary_loads(f.read())
