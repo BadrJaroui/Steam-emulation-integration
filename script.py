@@ -1,8 +1,7 @@
 import vdf
 import os
 import utils
-import pycdlib
-import pyisotools
+from verify_iso import check_iso_system
 
 # TODO: support for all pcsx2 compatible file extensions
 # TODO: figure out what to do with multi-disc games
@@ -21,7 +20,9 @@ file_extensions = [
     "m3u",
     "cue",
     "md",
-    "sfc"
+    "sfc",
+    "rvz",
+    "iso"
 ]
 
 def fetch_core(file_extension, root):
@@ -54,13 +55,13 @@ def scrape_games():
     d = {"shortcuts": {}}
     for root, dirs, files in os.walk("D:\\Emulation\\ROMs"):
         for file in files:
-            if not file.split(".")[1] in file_extensions:
+            if not file.split(".")[1].lower() in file_extensions:
                 continue
 
             d["shortcuts"].update(utils.generateEntry(
                 entryid=str(counter),
                 appid=appid_counter - 1,
-                name=file.split("(")[0].strip(),
+                name=parse_game_name(file),
                 target= fetch_target(root, file),
                 startdir=root
             ))
@@ -70,18 +71,31 @@ def scrape_games():
     return d
 
 def fetch_target(root, file):
-    file_extension = file.split(".")[1]
+    file_extension = file.split(".")[1].lower()
     if file_extension in file_extensions and file_extension == "rvz":
         return f'"D:\\Emulation\\Emulators\\Dolphin\\Dolphin.exe" "{root}\\{file}" "/f"'
+    
     if file_extension in file_extensions and file_extension == "iso":
-        return f'"D:\Emulation\Emulators\PCSX2\pcsx2-qt.exe" "{root}\\{file}" -nogui -fullscreen'
+        console_system = check_iso_system(f"{root}\\{file}")
+        if console_system == "wii" or console_system == "gamecube":
+            return f'"D:\\Emulation\\Emulators\\Dolphin\\Dolphin.exe" "{root}\\{file}" "/f"'
+        if console_system == "ps2":
+            return f'"D:\\Emulation\\Emulators\\PCSX2\\pcsx2-qt.exe" "{root}\\{file}" -nogui -fullscreen'
+
     if file_extension in file_extensions:
         return f'"D:\\Emulation\\Emulators\\RetroArch\\retroarch.exe" -L "{fetch_core(file.split(".")[1], root)}" "{root}\\{file}"'
 
+def parse_game_name(file_name):
+    if "(" in file_name:
+        return file_name.split("(")[0].strip()
+    if "[" in file_name:
+        return file_name.split("[")[0].strip()
+    if "." in file_name:
+        return file_name.split(".")[0].strip()
 
 def write_to_steam():
     new_shortcuts = scrape_games()
-    print(new_shortcuts)
+    # print(new_shortcuts)
     vdf.binary_dump(new_shortcuts, open('C:\\Program Files (x86)\\Steam\\userdata\\410602222\\config\\shortcuts.vdf', 'wb'))
 
 write_to_steam()
