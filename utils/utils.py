@@ -1,5 +1,3 @@
-import vdf
-
 def generateEntry(entryid, appid, name, target, startdir):
     format = {
             entryid: {
@@ -34,11 +32,20 @@ def parse_game_name(file_name):
         return file_name.split("[")[0].strip()
     if "." in file_name:
         return file_name.split(".")[0].strip()
-
-def readData():
-    with open("C:/Program Files (x86)/Steam/userdata/410602222/config/shortcuts.vdf", "rb") as f:
-        data = vdf.binary_loads(f.read())
-    print(data)
     
+def normalize_string(x):
+    return x.replace(" ", "")\
+            .replace("-", "")\
+            .replace("_", "")\
+            .lower()
+
+def retrieve_directory_name(file_path):
+    if "\\" in file_path:
+        return file_path.lower().split("\\roms")[1].split("\\")[1]
+    if "/" in file_path:
+        return file_path.lower().split("/roms")[1].split("/")[1]
+
+    return ValueError(f"Invalid path: {file_path}")
+
 def toUnsigned(n):
     return n & 0xFFFFFFFF

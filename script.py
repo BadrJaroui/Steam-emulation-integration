@@ -1,69 +1,96 @@
 import vdf
 import os
-import utils
-from verify_iso import check_iso_system
 
-# TODO: support for all pcsx2 compatible file extensions
-# TODO: figure out what to do with multi-disc games
-# TODO: paths as user input, one for emulator locations, one for retroarch cores locations, one for roms
-# TODO: refactor fetch_core
-# DONE: find a way to identify game's system that's more reliable than checking folder/file extension
-# TODO: check for m3u files: if exists, ignore cue files in folder. if not, use cue file
+import utils.vdf_utils as vdf_utils
+import utils.utils as utils
+import utils.steam_utils as steam_utils
 
-file_extensions = [
-    "gb",
-    "gba",
-    "gbc",
-    "z64",
-    "nds",
-    "nes",
-    "m3u",
-    "cue",
-    "md",
-    "sfc",
-    "rvz",
-    "iso"
-]
+# TODO: figure out what to do if used emulator isn't a retroarch core, dolphin or pcsx2
+# TODO: figure out what to do if user has roms and emulators across several drives
+# TODO: mfs will name their folder [console] games
+# TODO: make it so that shortcuts.vdf is updated rather than overwritten
+# TODO: replace vdf file location with user input (steam folder)
+# TODO: find appropriate user data folder
 
-# turn this garbage into a dictionary
-def fetch_core(file_extension, root):
-    if file_extension == "m3u" or file_extension == "cue":
-        if "dreamcast" in root.lower():
-            return "D:\\Emulation\\Emulators\\RetroArch\\cores\\flycast_libretro.dll"
-        if "playstation" in root.lower():
-            return "D:\\Emulation\\Emulators\\RetroArch\\cores\\swanstation_libretro.dll"
+# MAYBE: ask user to pick what consoles they want to use
+# MAYBE: ask user to pick what emulators they want to use
 
-    if file_extension == "gb":
-        return "D:\\Emulation\\Emulators\\RetroArch\\cores\\mgba_libretro.dll"
-    if file_extension == "gba":
-        return "D:\\Emulation\\Emulators\\RetroArch\\cores\\mgba_libretro.dll"
-    if file_extension == "gbc":
-        return "D:\\Emulation\\Emulators\\RetroArch\\cores\\mgba_libretro.dll"
-    if file_extension == "z64":
-        return "D:\\Emulation\\Emulators\\RetroArch\\cores\\mupen64plus_next_libretro.dll"
-    if file_extension == "nds":
-        return "D:\\Emulation\\Emulators\\RetroArch\\cores\\melonds_libretro.dll"
-    if file_extension == "nes":
-        return "D:\\Emulation\\Emulators\\RetroArch\\cores\\mesen_libretro.dll"
-    if file_extension == "md":
-        return "D:\\Emulation\\Emulators\\RetroArch\\cores\\genesis_plus_gx_libretro.dll"
-    if file_extension == "sfc":
-        return "D:\\Emulation\\Emulators\\RetroArch\\cores\\snes9x_libretro.dll"
+def retrieve_paths():
+    while True:
+        ROMS_PATH = input("Enter Rom folder path: ")
+        if not os.path.isdir(ROMS_PATH):
+            print("Not a valid path.")
+            continue
+        break
+
+    while True:
+        EMULATORS_PATH = input("Enter emulators folder path: ")
+        if not os.path.isdir(EMULATORS_PATH):
+            print("Not a valid path.")
+            continue
+        break
+
+    return (ROMS_PATH, EMULATORS_PATH)
+
+# ROMS_PATH, EMULATORS_PATH = retrieve_paths()
+ROMS_PATH = "D:\\Emulation\\ROMs"
+EMULATORS_PATH = "D:\\Emulation\\Emulators"
+
+# for string matching, remove spaces and use lowercase
+folder_names = {
+    "nes": ["nes", "nintendo entertainment system", "famicom", "nintendo family computer", "hyundai comboy", "comboy"],
+    "snes": ["snes", "super nintendo entertainment system", "super nes", 
+             "super nintendo", "sfc", "super famicom", "super fc", "hyundai super comboy", "hyundai sc", "super comboy"],
+    "n64": ["n64", "nintendo 64", "hyundai comboy 64", "comboy 64"],
+    "gc": ["nintendo gamecube", "gamecube", "gc", "gcn", "ngc"],
+    "wii": ["nintendo wii", "wii"],
+    "gb": ["gb", "nintendo gameboy", "gameboy", "ngb"],
+    "gbc": ["gbc", "nintendo gameboy color", "gameboy color", "ngbc"],
+    "gba": ["gba", "nintendo gameboy advance", "gameboy advance", "ngba"],
+    "nds": ["nds", "nintendo ds", "ds", "ndsi", "nintendo dsi", "dsi", "nds lite", "nintendo ds lite", "ds lite"],
+    "genesis": ["sega genesis", "genesis", "sega mega drive", "mega drive", "sega md", "md"],
+    "dreamcast": ["dreamcast", "sega dreamcast", "sega dc", "dc"],
+    "ps1": ["ps1", "playstation", "sony playstation", "sony playstation 1", "sony ps1", "sony ps", "sony psx", "psx", "ps one", "ps"],
+    "ps2": ["ps2", "sony playstation 2", "sony ps2", "ps two", "playstation 2"],
+    "xbox": ["xbox", "microsoft xbox", "ms xbox", "original xbox", "og xbox", "xbox classic"],
+}
+
+associated_cores = {
+    "gb": f"{EMULATORS_PATH}\\RetroArch\\cores\\mgba_libretro.dll",
+    "gba": f"{EMULATORS_PATH}\\RetroArch\\cores\\mgba_libretro.dll",
+    "gbc": f"{EMULATORS_PATH}\\RetroArch\\cores\\mgba_libretro.dll",
+    "n64": f"{EMULATORS_PATH}\\RetroArch\\cores\\mupen64plus_next_libretro.dll",
+    "nds": f"{EMULATORS_PATH}\\RetroArch\\cores\\melonds_libretro.dll",
+    "nes": f"{EMULATORS_PATH}\\RetroArch\\cores\\mesen_libretro.dll",
+    "ps1": f"{EMULATORS_PATH}\\RetroArch\\cores\\swanstation_libretro.dll",
+    "genesis": f"{EMULATORS_PATH}\\RetroArch\\cores\\genesis_plus_gx_libretro.dll",
+    "snes": f"{EMULATORS_PATH}\\RetroArch\\cores\\snes9x_libretro.dll",
+    "wii": "",
+    "gc": "",
+    "ps2": "",
+    "dreamcast": "",
+}
 
 def scrape_games():
     counter = 0
     appid_counter = -128908944
-    d = {"shortcuts": {}}
-    for root, dirs, files in os.walk("D:\\Emulation\\ROMs"):
+    d = vdf_utils.read_data(steam_utils.get_shortcuts_file("C:\\Program Files (x86)\\Steam"))
+    for root, dirs, files in os.walk(f"{ROMS_PATH}"):
         for file in files:
-            if not file.split(".")[1].lower() in file_extensions:
+            system = check_folder_name(root)
+            if system == None:
                 continue
+            if system == "ps1" or system == "dreamcast":
+                if not verify_multidisc_game(file, system):
+                    continue
+
+            vdf_utils.remove_rom_entry_if_exists(file.split(".")[0], system)
 
             d["shortcuts"].update(utils.generateEntry(
                 entryid=str(counter),
                 appid=appid_counter - 1,
                 name=utils.parse_game_name(file),
-                target= fetch_target(root, file),
+                target= fetch_target(system, f"{root}\\{file}"),
                 startdir=root
             ))
 
@@ -71,24 +98,42 @@ def scrape_games():
             appid_counter -= 1
     return d
 
-def fetch_target(root, file):
-    file_extension = file.split(".")[1].lower()
-    if file_extension in file_extensions and file_extension == "rvz":
-        return f'"D:\\Emulation\\Emulators\\Dolphin\\Dolphin.exe" "{root}\\{file}" "/f"'
-    
-    if file_extension in file_extensions and file_extension == "iso":
-        console_system = check_iso_system(f"{root}\\{file}")
-        if console_system == "wii" or console_system == "gamecube":
-            return f'"D:\\Emulation\\Emulators\\Dolphin\\Dolphin.exe" "{root}\\{file}" "/f"'
-        if console_system == "ps2":
-            return f'"D:\\Emulation\\Emulators\\PCSX2\\pcsx2-qt.exe" "{root}\\{file}" -nogui -fullscreen'
+def check_folder_name(file_path: str):
+    for names in folder_names:
+        for name in folder_names[names]:
+            normalized_name = utils.normalize_string(name)
+            directory_to_check = utils.retrieve_directory_name(file_path)
+            normalized_directory = utils.normalize_string(directory_to_check)
 
-    if file_extension in file_extensions:
-        return f'"D:\\Emulation\\Emulators\\RetroArch\\retroarch.exe" -L "{fetch_core(file.split(".")[1], root)}" "{root}\\{file}"'
+            if normalized_name == normalized_directory:
+                return names
+ 
+    return None
+
+def fetch_target(system, file_path):
+    emulator = associated_cores.get(system)
+    if emulator != None:
+        if system == "ps2":
+            return f'"{EMULATORS_PATH}\\PCSX2\\pcsx2-qt.exe" "{file_path}" -nogui -fullscreen'
+        if system == "wii" or system == "gc":
+            return f'"{EMULATORS_PATH}\\Dolphin\\Dolphin.exe" "{file_path}" "/f"'
+        if system == "dreamcast":
+            return "fart"
+        return f'"{EMULATORS_PATH}\\RetroArch\\retroarch.exe" -L "{emulator}" "{file_path}"'
+
+def verify_multidisc_game(file, system):
+    if system == "ps1" or system == "dreamcast":
+        file_extension = file.split(".")[1]
+        if file_extension == "m3u":
+            return True
+        return False
+
+    return False
 
 def write_to_steam():
     new_shortcuts = scrape_games()
-    # print(new_shortcuts)
     vdf.binary_dump(new_shortcuts, open('C:\\Program Files (x86)\\Steam\\userdata\\410602222\\config\\shortcuts.vdf', 'wb'))
+    print(new_shortcuts)
+    print("Games exported to Steam")
 
 write_to_steam()
