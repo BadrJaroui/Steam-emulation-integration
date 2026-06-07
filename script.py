@@ -1,19 +1,16 @@
 import vdf
 import os
+import time
 
 import utils.vdf_utils as vdf_utils
 import utils.utils as utils
 import utils.steam_utils as steam_utils
+from import_assets.import_images import import_images
 
-# TODO: figure out what to do if used emulator isn't a retroarch core, dolphin or pcsx2
-# TODO: figure out what to do if user has roms and emulators across several drives
-# TODO: mfs will name their folder [console] games
-# TODO: make it so that shortcuts.vdf is updated rather than overwritten
-# TODO: replace vdf file location with user input (steam folder)
-# TODO: find appropriate user data folder
-
-# MAYBE: ask user to pick what consoles they want to use
-# MAYBE: ask user to pick what emulators they want to use
+# TODO: user should be able to manually select what consoles/emulators they wish to use
+# TODO: create a ui for the application
+# TODO: get appid from last element in shortcuts rather than hardcoding
+# TODO: improve image selection: some games have similar names and receive the same images,
 
 def retrieve_paths():
     while True:
@@ -24,17 +21,25 @@ def retrieve_paths():
         break
 
     while True:
-        EMULATORS_PATH = input("Enter emulators folder path: ")
+        EMULATORS_PATH = input("Enter Emulators folder path: ")
         if not os.path.isdir(EMULATORS_PATH):
             print("Not a valid path.")
             continue
         break
 
-    return (ROMS_PATH, EMULATORS_PATH)
+    while True:
+        STEAM_PATH = input("Enter Steam folder path")
+        if not os.path.isdir(EMULATORS_PATH):
+            print("Not a valid path.")
+            continue
+        break
+
+    return (ROMS_PATH, EMULATORS_PATH, STEAM_PATH)
 
 # ROMS_PATH, EMULATORS_PATH = retrieve_paths()
 ROMS_PATH = "D:\\Emulation\\ROMs"
 EMULATORS_PATH = "D:\\Emulation\\Emulators"
+STEAM_PATH = "C:\\Program Files (x86)\\Steam"
 
 # for string matching, remove spaces and use lowercase
 folder_names = {
@@ -74,7 +79,7 @@ associated_cores = {
 def scrape_games():
     counter = 0
     appid_counter = -128908944
-    d = vdf_utils.read_data(steam_utils.get_shortcuts_file("C:\\Program Files (x86)\\Steam"))
+    d = vdf_utils.read_data(steam_utils.get_shortcuts_file(STEAM_PATH), STEAM_PATH)
     for root, dirs, files in os.walk(f"{ROMS_PATH}"):
         for file in files:
             system = check_folder_name(root)
@@ -84,7 +89,7 @@ def scrape_games():
                 if not verify_multidisc_game(file, system):
                     continue
 
-            vdf_utils.remove_rom_entry_if_exists(file.split(".")[0], system)
+            vdf_utils.remove_rom_entry_if_exists(file.split(".")[0], system, STEAM_PATH)
 
             d["shortcuts"].update(utils.generateEntry(
                 entryid=str(counter),
@@ -93,9 +98,13 @@ def scrape_games():
                 target= fetch_target(system, f"{root}\\{file}"),
                 startdir=root
             ))
-
             counter += 1
             appid_counter -= 1
+
+            try:
+                import_images(STEAM_PATH, appid_counter, utils.parse_game_name(file))
+            except Exception as e:
+                continue
     return d
 
 def check_folder_name(file_path: str):
@@ -131,9 +140,12 @@ def verify_multidisc_game(file, system):
     return False
 
 def write_to_steam():
+    start = time.time()
     new_shortcuts = scrape_games()
-    vdf.binary_dump(new_shortcuts, open('C:\\Program Files (x86)\\Steam\\userdata\\410602222\\config\\shortcuts.vdf', 'wb'))
+    vdf.binary_dump(new_shortcuts, open(f'{STEAM_PATH}\\userdata\\410602222\\config\\shortcuts.vdf', 'wb'))
     print(new_shortcuts)
     print("Games exported to Steam")
+    end = time.time()
+    print(f"Time taken to run the code was {end-start} seconds")
 
 write_to_steam()
