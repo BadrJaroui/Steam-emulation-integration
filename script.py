@@ -7,10 +7,13 @@ import utils.utils as utils
 import utils.steam_utils as steam_utils
 from import_assets.import_images import import_images
 
+# TODO: make it so that multidisc games generate m3u file if not exists
+# TODO: give user the option for multidisc to import 1 multidisc, all multidiscs or create an m3u file
+
 # TODO: user should be able to manually select what consoles/emulators they wish to use
 # TODO: create a ui for the application
-# TODO: get appid from last element in shortcuts rather than hardcoding
-# TODO: improve image selection: some games have similar names and receive the same images,
+
+# TODO: improve image selection: some games have similar names and receive the same images
 
 def retrieve_paths():
     while True:
