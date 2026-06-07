@@ -1,5 +1,3 @@
-import vdf
-
 def generateEntry(entryid, appid, name, target, startdir):
     format = {
             entryid: {
@@ -49,10 +47,5 @@ def retrieve_directory_name(file_path):
 
     return ValueError(f"Invalid path: {file_path}")
 
-def readData():
-    with open("C:/Program Files (x86)/Steam/userdata/410602222/config/shortcuts.vdf", "rb") as f:
-        data = vdf.binary_loads(f.read())
-    print(data)
-    
 def toUnsigned(n):
     return n & 0xFFFFFFFF

@@ -1,9 +1,16 @@
 import vdf
 import os
-import utils
+
+import utils.vdf_utils as vdf_utils
+import utils.utils as utils
+import utils.steam_utils as steam_utils
 
 # TODO: figure out what to do if used emulator isn't a retroarch core, dolphin or pcsx2
 # TODO: figure out what to do if user has roms and emulators across several drives
+# TODO: mfs will name their folder [console] games
+# TODO: make it so that shortcuts.vdf is updated rather than overwritten
+# TODO: replace vdf file location with user input (steam folder)
+# TODO: find appropriate user data folder
 
 # MAYBE: ask user to pick what consoles they want to use
 # MAYBE: ask user to pick what emulators they want to use
@@ -25,7 +32,9 @@ def retrieve_paths():
 
     return (ROMS_PATH, EMULATORS_PATH)
 
-ROMS_PATH, EMULATORS_PATH = retrieve_paths()
+# ROMS_PATH, EMULATORS_PATH = retrieve_paths()
+ROMS_PATH = "D:\\Emulation\\ROMs"
+EMULATORS_PATH = "D:\\Emulation\\Emulators"
 
 # for string matching, remove spaces and use lowercase
 folder_names = {
@@ -42,7 +51,7 @@ folder_names = {
     "genesis": ["sega genesis", "genesis", "sega mega drive", "mega drive", "sega md", "md"],
     "dreamcast": ["dreamcast", "sega dreamcast", "sega dc", "dc"],
     "ps1": ["ps1", "playstation", "sony playstation", "sony playstation 1", "sony ps1", "sony ps", "sony psx", "psx", "ps one", "ps"],
-    "ps2": ["ps2", "sony playstation 2", "sony ps2", "ps two"],
+    "ps2": ["ps2", "sony playstation 2", "sony ps2", "ps two", "playstation 2"],
     "xbox": ["xbox", "microsoft xbox", "ms xbox", "original xbox", "og xbox", "xbox classic"],
 }
 
@@ -65,7 +74,7 @@ associated_cores = {
 def scrape_games():
     counter = 0
     appid_counter = -128908944
-    d = {"shortcuts": {}}
+    d = vdf_utils.read_data(steam_utils.get_shortcuts_file("C:\\Program Files (x86)\\Steam"))
     for root, dirs, files in os.walk(f"{ROMS_PATH}"):
         for file in files:
             system = check_folder_name(root)
@@ -74,6 +83,8 @@ def scrape_games():
             if system == "ps1" or system == "dreamcast":
                 if not verify_multidisc_game(file, system):
                     continue
+
+            vdf_utils.remove_rom_entry_if_exists(file.split(".")[0], system)
 
             d["shortcuts"].update(utils.generateEntry(
                 entryid=str(counter),
@@ -96,9 +107,8 @@ def check_folder_name(file_path: str):
 
             if normalized_name == normalized_directory:
                 return names
-    
+ 
     return None
-
 
 def fetch_target(system, file_path):
     emulator = associated_cores.get(system)
@@ -123,6 +133,7 @@ def verify_multidisc_game(file, system):
 def write_to_steam():
     new_shortcuts = scrape_games()
     vdf.binary_dump(new_shortcuts, open('C:\\Program Files (x86)\\Steam\\userdata\\410602222\\config\\shortcuts.vdf', 'wb'))
+    print(new_shortcuts)
     print("Games exported to Steam")
 
 write_to_steam()
