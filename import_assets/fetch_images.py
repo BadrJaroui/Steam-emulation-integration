@@ -22,7 +22,7 @@ def fetch_game_heroes(game_id):
 
 def fetch_game_banner(game, heroes):
     if not heroes:
-        print(f"Cover not found for {game.name}")
+        print(f"Banner not found for {game.name}")
         return
 
     for hero in heroes:

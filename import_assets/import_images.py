@@ -17,13 +17,10 @@ def import_images(steam_directory, app_id, name):
     heroes = fetch_game_heroes(game.id)
 
     cover_url = fetch_game_cover(game, grids)
-    cover_url_extension = str(cover_url).split(".")[-1]
     write_image(cover_url, f"{path}\\{image_id}{COVER_EXTENSION}.png")
 
     cover_url = fetch_game_banner(game, heroes)
-    cover_url_extension = str(cover_url).split(".")[-1]
     write_image(cover_url, f"{path}\\{image_id}{BACKGROUND_EXTENSION}.png")
 
     cover_url = fetch_game_logo(game)
-    cover_url_extension = str(cover_url).split(".")[-1]
     write_image(cover_url, f"{path}\\{image_id}{LOGO_EXTENSION}.png")

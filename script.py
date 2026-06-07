@@ -7,16 +7,10 @@ import utils.utils as utils
 import utils.steam_utils as steam_utils
 from import_assets.import_images import import_images
 
-# TODO: figure out what to do if used emulator isn't a retroarch core, dolphin or pcsx2
-# TODO: figure out what to do if user has roms and emulators across several drives
-# TODO: mfs will name their folder [console] games
+# TODO: user should be able to manually select what consoles/emulators they wish to use
+# TODO: create a ui for the application
 # TODO: get appid from last element in shortcuts rather than hardcoding
-
 # TODO: improve image selection: some games have similar names and receive the same images,
-# TODO: some games are not recognized, decide whether to leave as is or fall back on images from similar name
-
-# MAYBE: ask user to pick what consoles they want to use
-# MAYBE: ask user to pick what emulators they want to use
 
 def retrieve_paths():
     while True:
