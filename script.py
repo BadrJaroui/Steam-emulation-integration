@@ -24,17 +24,25 @@ def retrieve_paths():
         break
 
     while True:
-        EMULATORS_PATH = input("Enter emulators folder path: ")
+        EMULATORS_PATH = input("Enter Emulators folder path: ")
         if not os.path.isdir(EMULATORS_PATH):
             print("Not a valid path.")
             continue
         break
 
-    return (ROMS_PATH, EMULATORS_PATH)
+    while True:
+        STEAM_PATH = input("Enter Steam folder path")
+        if not os.path.isdir(EMULATORS_PATH):
+            print("Not a valid path.")
+            continue
+        break
+
+    return (ROMS_PATH, EMULATORS_PATH, STEAM_PATH)
 
 # ROMS_PATH, EMULATORS_PATH = retrieve_paths()
 ROMS_PATH = "D:\\Emulation\\ROMs"
 EMULATORS_PATH = "D:\\Emulation\\Emulators"
+STEAM_PATH = "C:\\Program Files (x86)\\Steam"
 
 # for string matching, remove spaces and use lowercase
 folder_names = {
@@ -74,7 +82,7 @@ associated_cores = {
 def scrape_games():
     counter = 0
     appid_counter = -128908944
-    d = vdf_utils.read_data(steam_utils.get_shortcuts_file("C:\\Program Files (x86)\\Steam"))
+    d = vdf_utils.read_data(steam_utils.get_shortcuts_file(STEAM_PATH), STEAM_PATH)
     for root, dirs, files in os.walk(f"{ROMS_PATH}"):
         for file in files:
             system = check_folder_name(root)
@@ -84,7 +92,7 @@ def scrape_games():
                 if not verify_multidisc_game(file, system):
                     continue
 
-            vdf_utils.remove_rom_entry_if_exists(file.split(".")[0], system)
+            vdf_utils.remove_rom_entry_if_exists(file.split(".")[0], system, STEAM_PATH)
 
             d["shortcuts"].update(utils.generateEntry(
                 entryid=str(counter),
@@ -132,7 +140,7 @@ def verify_multidisc_game(file, system):
 
 def write_to_steam():
     new_shortcuts = scrape_games()
-    vdf.binary_dump(new_shortcuts, open('C:\\Program Files (x86)\\Steam\\userdata\\410602222\\config\\shortcuts.vdf', 'wb'))
+    vdf.binary_dump(new_shortcuts, open(f'{STEAM_PATH}\\userdata\\410602222\\config\\shortcuts.vdf', 'wb'))
     print(new_shortcuts)
     print("Games exported to Steam")
 
