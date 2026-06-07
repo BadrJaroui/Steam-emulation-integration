@@ -24,3 +24,10 @@ def remove_rom_entry_if_exists(name, system, steam_directory):
                 print("game found")
                 del data[item][game]
                 vdf.binary_dump(data, open(f'{steam_directory}\\userdata\\410602222\\config\\shortcuts.vdf', 'wb'))
+
+def get_last_shortcut(shortcuts_vdf):
+    for item in shortcuts_vdf:
+        if not shortcuts_vdf[item]:
+            return None
+        last_key = list(shortcuts_vdf[item].keys())[-1]
+        return shortcuts_vdf[item][last_key]['appid']

@@ -77,9 +77,13 @@ associated_cores = {
 }
 
 def scrape_games():
-    counter = 0
-    appid_counter = -128908944
     d = vdf_utils.read_data(steam_utils.get_shortcuts_file(STEAM_PATH), STEAM_PATH)
+
+    counter = 0
+    appid_counter = vdf_utils.get_last_shortcut(d)
+    if appid_counter is None:
+        appid_counter = -128908944
+
     for root, dirs, files in os.walk(f"{ROMS_PATH}"):
         for file in files:
             system = check_folder_name(root)
@@ -101,10 +105,10 @@ def scrape_games():
             counter += 1
             appid_counter -= 1
 
-            try:
-                import_images(STEAM_PATH, appid_counter, utils.parse_game_name(file))
-            except Exception as e:
-                continue
+            # try:
+            #     import_images(STEAM_PATH, appid_counter, utils.parse_game_name(file))
+            # except Exception as e:
+            #     continue
     return d
 
 def check_folder_name(file_path: str):
