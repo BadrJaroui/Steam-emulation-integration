@@ -1,16 +1,19 @@
 import vdf
 import os
+import time
 
 import utils.vdf_utils as vdf_utils
 import utils.utils as utils
 import utils.steam_utils as steam_utils
+from import_assets.import_images import import_images
 
 # TODO: figure out what to do if used emulator isn't a retroarch core, dolphin or pcsx2
 # TODO: figure out what to do if user has roms and emulators across several drives
 # TODO: mfs will name their folder [console] games
-# TODO: make it so that shortcuts.vdf is updated rather than overwritten
-# TODO: replace vdf file location with user input (steam folder)
-# TODO: find appropriate user data folder
+# TODO: get appid from last element in shortcuts rather than hardcoding
+
+# TODO: improve image selection: some games have similar names and receive the same images,
+# TODO: some games are not recognized, decide whether to leave as is or fall back on images from similar name
 
 # MAYBE: ask user to pick what consoles they want to use
 # MAYBE: ask user to pick what emulators they want to use
@@ -101,9 +104,13 @@ def scrape_games():
                 target= fetch_target(system, f"{root}\\{file}"),
                 startdir=root
             ))
-
             counter += 1
             appid_counter -= 1
+
+            try:
+                import_images(STEAM_PATH, appid_counter, utils.parse_game_name(file))
+            except Exception as e:
+                continue
     return d
 
 def check_folder_name(file_path: str):
@@ -139,9 +146,12 @@ def verify_multidisc_game(file, system):
     return False
 
 def write_to_steam():
+    start = time.time()
     new_shortcuts = scrape_games()
     vdf.binary_dump(new_shortcuts, open(f'{STEAM_PATH}\\userdata\\410602222\\config\\shortcuts.vdf', 'wb'))
     print(new_shortcuts)
     print("Games exported to Steam")
+    end = time.time()
+    print(f"Time taken to run the code was {end-start} seconds")
 
 write_to_steam()
