@@ -11,9 +11,11 @@ from import_assets.import_images import import_images
 # TODO: give user the option for multidisc to import 1 multidisc, all multidiscs or create an m3u file
 
 # TODO: user should be able to manually select what consoles/emulators they wish to use
+# TODO: user should be able to manually select what images they wish to use
 # TODO: create a ui for the application
 
 # TODO: improve image selection: some games have similar names and receive the same images
+# TODO: check for valid file extensions to avoid importing save/config files with same name
 
 def retrieve_paths():
     while True:
@@ -108,10 +110,10 @@ def scrape_games():
             counter += 1
             appid_counter -= 1
 
-            # try:
-            #     import_images(STEAM_PATH, appid_counter, utils.parse_game_name(file))
-            # except Exception as e:
-            #     continue
+            try:
+                import_images(STEAM_PATH, appid_counter, utils.parse_game_name(file))
+            except Exception as e:
+                continue
     return d
 
 def check_folder_name(file_path: str):

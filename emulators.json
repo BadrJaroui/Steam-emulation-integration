@@ -1,0 +1,112 @@
+{
+    "gb" : [
+        {
+            "name": "Retroarch",
+            "target": ["%RETROARCH_DIR%/retroarch.exe", "-L", "%RETROARCH_DIR%/cores/mgba_libretro.dll", "%ROM_PATH%"]
+        },
+        {
+            "name": "BGB",
+            "target": ["%EMULATOR_PATH%", "%ROM_PATH%", "-setting windowmode=4"]
+        },
+        {
+            "name": "SameBoy",
+            "target": ["%EMULATOR_PATH%", "%ROM_PATH%", "-f"]
+        }
+    ],
+
+    "gbc": [
+        {
+            "name": "Retroarch",
+            "target": ["%RETROARCH_DIR%/retroarch.exe", "-L", "%RETROARCH_DIR%/cores/mgba_libretro.dll", "%ROM_PATH%"]
+        },
+        {
+            "name": "BGB",
+            "target": ["%EMULATOR_PATH%", "%ROM_PATH%", "-setting windowmode=4"]
+        },
+        {
+            "name": "SameBoy",
+            "target": ["%EMULATOR_PATH%", "%ROM_PATH%", "-f"]
+        }
+    ],
+
+    "gba": [
+        {
+            "name": "Retroarch",
+            "target": ["%RETROARCH_DIR%/retroarch.exe", "-L", "%RETROARCH_DIR%/cores/mgba_libretro.dll", "%ROM_PATH%"]
+        },
+        {
+            "name": "mGBA",
+            "target": ["%EMULATOR_PATH%", "%ROM_PATH%"]
+        },
+        {
+            "name": "Mesen",
+            "target": ["%EMULATOR_PATH%", "%ROM_PATH%", "-fullscreen"]
+        }
+    ],
+
+    "nds": [],
+
+    "3ds": [],
+
+    "nes": [
+        {
+            "name": "Retroarch",
+            "target": ["%RETROARCH_DIR%/retroarch.exe", "-L", "%RETROARCH_DIR%/cores/mesen_libretro.dll", "%ROM_PATH%"]
+        }
+    ],
+
+    "snes": [
+        {
+            "name": "Retroarch",
+            "target": ["%RETROARCH_DIR%/retroarch.exe", "-L", "%RETROARCH_DIR%/cores/snes9x_libretro.dll", "%ROM_PATH%"]
+        }
+    ],
+
+    "n64": [
+        {
+            "name": "Retroarch",
+            "target": ["%RETROARCH_DIR%/retroarch.exe", "-L", "%RETROARCH_DIR%/cores/mupen64plus_next_libretro.dll", "%ROM_PATH%"]
+        },
+        {
+            "name": "Ares",
+            "target": ["%EMULATOR_PATH%", "%ROM_PATH%", "--fullscreen"]
+        }
+    ],
+
+    "gc": [
+        {
+            "name": "Dolphin",
+            "target": ["%EMULATOR_PATH%", "%ROM_PATH%", "/f"]
+        }
+    ],
+
+    "wii": [
+        {
+            "name": "Dolphin",
+            "target": ["%EMULATOR_PATH%", "%ROM_PATH%", "/f"]
+        }
+    ],
+
+    "wiiu": [
+        {
+            "name": "Cemu",
+            "target": ["%EMULATOR_PATH%", "-g", "%ROM_PATH%"]
+        }
+    ],
+
+    "switch": [],
+
+    "genesis": [
+        {
+            "name": "Retroarch",
+            "target": ["%RETROARCH_DIR%/retroarch.exe", "-L", "%RETROARCH_DIR%/cores/genesis_plus_gx_libretro.dll", "%ROM_PATH%"]
+        }
+    ],
+
+    "ps2": [
+        {
+            "name": "PCSX2",
+            "target": ["%EMULATOR_PATH%", "%ROM_PATH%", "-nogui", "-fullscreen"]
+        }
+    ]
+}
