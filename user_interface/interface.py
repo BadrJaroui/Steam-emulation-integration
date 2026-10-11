@@ -91,6 +91,7 @@ class FolderSelect(tk.CTkFrame):
             if "Switch" in self.selected_consoles:
                 emulators_to_return.append("Eden")
             
+            return emulators_to_return
 
         def select_file(entry_widget):
             filename = filedialog.askopenfilename()
@@ -105,7 +106,7 @@ class FolderSelect(tk.CTkFrame):
         folder_selection.grid_columnconfigure([0, 1, 2, 3], weight=1)
         folder_selection.grid_rowconfigure([0, 1, 2, 3, 4, 5], weight=1)
 
-        folder_selection.grid(row=1, rowspan=3, column=1, columnspan=2, sticky="nsew")
+        folder_selection.grid(row=1, rowspan=4, column=1, columnspan=2, sticky="nsew")
 
         for index, console in enumerate(self.selected_consoles):
             label = tk.CTkLabel(folder_selection, text=console)
@@ -119,9 +120,9 @@ class FolderSelect(tk.CTkFrame):
             browse_btn.grid(row=index, column=3, sticky="w", padx=5)
 
         btn = tk.CTkButton(self, text="Back", command=self.prev_screen)
-        btn.grid(row=4, column=1, padx=20, pady=20, sticky="se")
+        btn.grid(row=5, column=1, padx=20, pady=20, sticky="se")
         btn2 = tk.CTkButton(self, text="Continue")
-        btn2.grid(row=4, column=2, padx=20, pady=20, sticky="sw")
+        btn2.grid(row=5, column=2, padx=20, pady=20, sticky="sw")
     
     def prev_screen(self):
         self.master.next_frame(ConsoleSelect)

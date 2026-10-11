@@ -1,0 +1,15 @@
+{
+    "gb": "D:/Emulation/Emulators/RetroArch/cores/mgba_libretro.dll",
+    "gba": "D:/Emulation/Emulators/RetroArch/cores/mgba_libretro.dll",
+    "gbc": "D:/Emulation/Emulators/RetroArch/cores/mgba_libretro.dll",
+    "n64": "D:/Emulation/Emulators/RetroArch/cores/mupen64plus_next_libretro.dll",
+    "nds": "D:/Emulation/Emulators/RetroArch/cores/melonds_libretro.dll",
+    "nes": "D:/Emulation/Emulators/RetroArch/cores/mesen_libretro.dll",
+    "ps1": "D:/Emulation/Emulators/RetroArch/cores/swanstation_libretro.dll",
+    "genesis": "D:/Emulation/Emulators/RetroArch/cores/genesis_plus_gx_libretro.dll",
+    "snes": "D:/Emulation/Emulators/RetroArch/cores/snes9x_libretro.dll",
+    "wii": "",
+    "gc": "",
+    "ps2": "",
+    "dreamcast": ""
+}
