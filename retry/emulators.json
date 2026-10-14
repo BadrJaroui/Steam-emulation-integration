@@ -1,15 +1,110 @@
 {
-    "gb": "D:/Emulation/Emulators/RetroArch/cores/mgba_libretro.dll",
-    "gba": "D:/Emulation/Emulators/RetroArch/cores/mgba_libretro.dll",
-    "gbc": "D:/Emulation/Emulators/RetroArch/cores/mgba_libretro.dll",
-    "n64": "D:/Emulation/Emulators/RetroArch/cores/mupen64plus_next_libretro.dll",
-    "nds": "D:/Emulation/Emulators/RetroArch/cores/melonds_libretro.dll",
-    "nes": "D:/Emulation/Emulators/RetroArch/cores/mesen_libretro.dll",
-    "ps1": "D:/Emulation/Emulators/RetroArch/cores/swanstation_libretro.dll",
-    "genesis": "D:/Emulation/Emulators/RetroArch/cores/genesis_plus_gx_libretro.dll",
-    "snes": "D:/Emulation/Emulators/RetroArch/cores/snes9x_libretro.dll",
-    "wii": "",
-    "gc": "",
-    "ps2": "",
-    "dreamcast": ""
+    "gb": {
+        "path": "D:/Emulation/Emulators/RetroArch/cores/mgba_libretro.dll",
+        "target": [
+            "%RETROARCH_DIR%/retroarch.exe",
+            "-L",
+            "%RETROARCH_DIR%/cores/mgba_libretro.dll",
+            "%ROM_PATH%"
+        ],
+        "extensions": ["gb"]
+    },
+    "gba": {
+        "path": "D:/Emulation/Emulators/RetroArch/cores/mgba_libretro.dll",
+        "target": [
+            "%RETROARCH_DIR%/retroarch.exe",
+            "-L",
+            "%RETROARCH_DIR%/cores/mgba_libretro.dll",
+            "%ROM_PATH%"
+        ],
+        "extensions": ["gba"]
+    },
+    "gbc": {
+        "path": "D:/Emulation/Emulators/RetroArch/cores/mgba_libretro.dll",
+        "target": [
+            "%RETROARCH_DIR%/retroarch.exe",
+            "-L",
+            "%RETROARCH_DIR%/cores/mgba_libretro.dll",
+            "%ROM_PATH%"
+        ],
+        "extensions": ["gbc"]
+    },
+    "n64": {
+        "path": "D:/Emulation/Emulators/RetroArch/cores/mupen64plus_next_libretro.dll",
+        "target": [
+            "%RETROARCH_DIR%/retroarch.exe",
+            "-L",
+            "%RETROARCH_DIR%/cores/mupen64plus_next_libretro.dll",
+            "%ROM_PATH%"
+        ],
+        "extensions": ["z64", "n64", "v64"]
+    },
+    "nds": {
+        "path": "D:/Emulation/Emulators/RetroArch/cores/melonds_libretro.dll",
+        "target": [],
+        "extensions": ["nds", "srl"]
+    },
+    "nes": {
+        "path": "D:/Emulation/Emulators/RetroArch/cores/mesen_libretro.dll",
+        "target": [
+            "%RETROARCH_DIR%/retroarch.exe",
+            "-L",
+            "%RETROARCH_DIR%/cores/mesen_libretro.dll",
+            "%ROM_PATH%"
+        ],
+        "extensions": ["nes"]
+    },
+    "ps1": {
+        "path": "D:/Emulation/Emulators/RetroArch/cores/swanstation_libretro.dll",
+        "target": [],
+        "extensions": []
+    },
+    "genesis": {
+        "path": "D:/Emulation/Emulators/RetroArch/cores/genesis_plus_gx_libretro.dll",
+        "target": [
+            "%RETROARCH_DIR%/retroarch.exe",
+            "-L",
+            "%RETROARCH_DIR%/cores/genesis_plus_gx_libretro.dll",
+            "%ROM_PATH%"
+        ],
+        "extensions": ["bin", "md", "gen", "smd"]
+    },
+    "snes": {
+        "path": "D:/Emulation/Emulators/RetroArch/cores/snes9x_libretro.dll",
+        "target": [
+            "%RETROARCH_DIR%/retroarch.exe",
+            "-L",
+            "%RETROARCH_DIR%/cores/snes9x_libretro.dll",
+            "%ROM_PATH%"
+        ],
+        "extensions": ["sfc", "smc", ""]
+    },
+    "wii": {
+        "path": "D:/Emulation/Emulators/Dolphin/Dolphin.exe",
+        "target": [
+            "%EMULATOR_PATH%",
+            "%ROM_PATH%",
+            "/f"
+        ],
+        "extensions": ["iso", "wbfs", "rvz"]
+    },
+    "gc": {
+        "path": "D:/Emulation/Emulators/Dolphin/Dolphin.exe",
+        "target": [
+            "%EMULATOR_PATH%",
+            "%ROM_PATH%",
+            "/f"
+        ],
+        "extensions": ["iso", "gcz", "rvz"]
+    },
+    "ps2": {
+        "path": "D:/Emulation/Emulators/PCSX2/pcsx2-qt.exe",
+        "target": [
+            "%EMULATOR_PATH%",
+            "%ROM_PATH%",
+            "-nogui",
+            "-fullscreen"
+        ],
+        "extensions": ["iso", "chd", "cso", "zso"]
+    }
 }
