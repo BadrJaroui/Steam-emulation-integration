@@ -31,3 +31,6 @@ def get_steam_id():
 def convert_steam64_to_steam3(steam64):
     offset = 76561197960265728
     return steam64 - offset
+
+def to_unsigned(n):
+    return n & 0xFFFFFFFF

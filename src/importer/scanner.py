@@ -1,38 +1,44 @@
-from utils.load_data import fetch_emulators, fetch_console_names
+from utils.load_data import fetch_emulators, fetch_consoles
 from pathlib import Path
 
 emulators = fetch_emulators()
-console_names = fetch_console_names()
+consoles = fetch_consoles()
 
-def get_console(folder_dir):
-    for console in console_names:
-        for name_variant in console_names[console]:
-            if Path(folder_dir).parts[-1].lower() == name_variant:
+def get_console_from_folder_name(rom_dir):
+    for console in consoles:
+        for name_variant in consoles[console]:
+            if Path(rom_dir).parts[-1].lower() == name_variant:
                 return console
     return None
 
-def get_emulator_from_folder_name(folder_dir):
-    console = get_console(folder_dir)
+def get_emulator_from_folder_name(rom_dir):
+    console = get_console_from_folder_name(rom_dir)
     if console is None:
-        return
+        return None
 
     for emulator in emulators.items():
-        if emulator[0] == console:
+        if console == emulator[0]:
             return emulator
     return None
 
-def scan_folder(rom_folder):
+def is_valid_rom(rom, valid_extensions):
+    if not Path(rom).is_file():
+        return False
+    if str(rom).split(".")[-1] not in valid_extensions:
+        return False
+    return True
+
+def scan_folder(rom_dir):
     roms_data = []
-    emulator_data = get_emulator_from_folder_name(rom_folder)
+    emulator_data = get_emulator_from_folder_name(rom_dir)
     if emulator_data is None:
-        return
+        return None
 
-    for rom in Path.iterdir(Path(rom_folder)):
-        if not rom.is_file(): continue
-        if str(rom).split(".")[-1] not in emulator_data[1]["extensions"]: continue
+    for rom in Path.iterdir(Path(rom_dir)):
+        if not is_valid_rom(rom, emulator_data[1]["extensions"]):
+            continue
         
-        roms_data.append({"rom": str(rom), 
+        roms_data.append({"rom_name": str(rom), 
                           "emulator_path": emulator_data[1]["path"],
-                          "emulator_target": emulator_data[1]["target"]})
-
+                          "launch_cmd": emulator_data[1]["launch_cmd"]})
     return roms_data

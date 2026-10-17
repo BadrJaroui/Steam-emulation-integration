@@ -1,7 +1,7 @@
 {
     "gb": {
         "path": "D:/Emulation/Emulators/RetroArch/cores/mgba_libretro.dll",
-        "target": [
+        "launch_cmd": [
             "%RETROARCH_DIR%/retroarch.exe",
             "-L",
             "%RETROARCH_DIR%/cores/mgba_libretro.dll",
@@ -11,7 +11,7 @@
     },
     "gba": {
         "path": "D:/Emulation/Emulators/RetroArch/cores/mgba_libretro.dll",
-        "target": [
+        "launch_cmd": [
             "%RETROARCH_DIR%/retroarch.exe",
             "-L",
             "%RETROARCH_DIR%/cores/mgba_libretro.dll",
@@ -21,7 +21,7 @@
     },
     "gbc": {
         "path": "D:/Emulation/Emulators/RetroArch/cores/mgba_libretro.dll",
-        "target": [
+        "launch_cmd": [
             "%RETROARCH_DIR%/retroarch.exe",
             "-L",
             "%RETROARCH_DIR%/cores/mgba_libretro.dll",
@@ -31,7 +31,7 @@
     },
     "n64": {
         "path": "D:/Emulation/Emulators/RetroArch/cores/mupen64plus_next_libretro.dll",
-        "target": [
+        "launch_cmd": [
             "%RETROARCH_DIR%/retroarch.exe",
             "-L",
             "%RETROARCH_DIR%/cores/mupen64plus_next_libretro.dll",
@@ -41,12 +41,12 @@
     },
     "nds": {
         "path": "D:/Emulation/Emulators/RetroArch/cores/melonds_libretro.dll",
-        "target": [],
+        "launch_cmd": [],
         "extensions": ["nds", "srl"]
     },
     "nes": {
         "path": "D:/Emulation/Emulators/RetroArch/cores/mesen_libretro.dll",
-        "target": [
+        "launch_cmd": [
             "%RETROARCH_DIR%/retroarch.exe",
             "-L",
             "%RETROARCH_DIR%/cores/mesen_libretro.dll",
@@ -56,12 +56,12 @@
     },
     "ps1": {
         "path": "D:/Emulation/Emulators/RetroArch/cores/swanstation_libretro.dll",
-        "target": [],
+        "launch_cmd": [],
         "extensions": []
     },
     "genesis": {
         "path": "D:/Emulation/Emulators/RetroArch/cores/genesis_plus_gx_libretro.dll",
-        "target": [
+        "launch_cmd": [
             "%RETROARCH_DIR%/retroarch.exe",
             "-L",
             "%RETROARCH_DIR%/cores/genesis_plus_gx_libretro.dll",
@@ -71,7 +71,7 @@
     },
     "snes": {
         "path": "D:/Emulation/Emulators/RetroArch/cores/snes9x_libretro.dll",
-        "target": [
+        "launch_cmd": [
             "%RETROARCH_DIR%/retroarch.exe",
             "-L",
             "%RETROARCH_DIR%/cores/snes9x_libretro.dll",
@@ -81,7 +81,7 @@
     },
     "wii": {
         "path": "D:/Emulation/Emulators/Dolphin/Dolphin.exe",
-        "target": [
+        "launch_cmd": [
             "%EMULATOR_PATH%",
             "%ROM_PATH%",
             "/f"
@@ -90,7 +90,7 @@
     },
     "gc": {
         "path": "D:/Emulation/Emulators/Dolphin/Dolphin.exe",
-        "target": [
+        "launch_cmd": [
             "%EMULATOR_PATH%",
             "%ROM_PATH%",
             "/f"
@@ -99,7 +99,7 @@
     },
     "ps2": {
         "path": "D:/Emulation/Emulators/PCSX2/pcsx2-qt.exe",
-        "target": [
+        "launch_cmd": [
             "%EMULATOR_PATH%",
             "%ROM_PATH%",
             "-nogui",

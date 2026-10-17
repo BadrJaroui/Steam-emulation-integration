@@ -4,34 +4,34 @@ from pathlib import Path
 
 config = fetch_config()
 
-def replace_placeholders(target, rom_path, retroarch_dir):
-    for i in range(len(target)):
-        if "%ROM_PATH%" in target[i]:
-            target[i] = target[i].replace("%ROM_PATH%", rom_path)
-        if "%RETROARCH_DIR%" in target[i]:
-            target[i] = target[i].replace("%RETROARCH_DIR%", retroarch_dir)
+def replace_launch_cmd_placeholders(launch_cmd, rom_path, retroarch_dir):
+    for i in range(len(launch_cmd)):
+        if "%ROM_PATH%" in launch_cmd[i]:
+            launch_cmd[i] = launch_cmd[i].replace("%ROM_PATH%", rom_path)
+        if "%RETROARCH_DIR%" in launch_cmd[i]:
+            launch_cmd[i] = launch_cmd[i].replace("%RETROARCH_DIR%", retroarch_dir)
 
-    return target
+    return launch_cmd
 
 def format_title(rom):
-    extentionless_rom = str(Path(rom).stem)
-    return extentionless_rom.split("(")[0].strip()
+    rom = str(Path(rom).stem)
+    return rom.split("(")[0].strip()
 
-def format_target(target):
-    return " ".join(f'"{element}"' for element in target)
+def format_launch_cmd(launch_cmd):
+    return " ".join(f'"{el}"' for el in launch_cmd)
 
 def get_parent_folder(rom_path):
     return str(Path(rom_path).parent)
 
-def generateShortcut(entryid, appid, name, target, startdir):
+def generateShortcut(entry_id, app_id, name, launch_cmd, start_dir):
     return {
-            entryid: {
-                "appid": appid,
+            entry_id: {
+                "appid": app_id,
                 "appname": name,
                 "exe": (
-                    target
+                    launch_cmd
                 ),
-                "StartDir": f'{startdir}',
+                "StartDir": f'{start_dir}',
                 "icon": "",
                 "ShortcutPath": "",
                 "LaunchOptions": "",
@@ -50,19 +50,19 @@ def generateShortcut(entryid, appid, name, target, startdir):
 
 def create_shortcuts(roms: list[dict[str, str, str]]):
     entries = {}
-    data = fetch_shortcuts()
-    counter = len(data["shortcuts"])
+    entry_counter = 0
     appid_counter = -99999999
     for rom in roms:
-        target_copy = list(rom["emulator_target"])
-        target_copy = replace_placeholders(target_copy, rom["rom"], config["paths"]["retroarch_path"])
+        launch_cmds_copy = list(rom["launch_cmd"])
+        launch_cmds_copy = replace_launch_cmd_placeholders(launch_cmds_copy, 
+                            rom["rom_name"], config["paths"]["retroarch_path"])
         entries.update(generateShortcut(
-                        entryid=str(counter),
-                        appid=appid_counter,
-                        name=format_title(rom["rom"]),
-                        target=format_target(target_copy),
-                        startdir=get_parent_folder(rom["rom"])
+                        entry_id=str(entry_counter),
+                        app_id=appid_counter,
+                        name=format_title(rom["rom_name"]),
+                        launch_cmd=format_launch_cmd(launch_cmds_copy),
+                        start_dir=get_parent_folder(rom["rom_name"])
                     ))
-        counter += 1
+        entry_counter += 1
         appid_counter -= 1
     return entries
