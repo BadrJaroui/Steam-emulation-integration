@@ -8,12 +8,16 @@ def add_roms_to_shortcuts(roms):
     d = fetch_shortcuts()
     shortcuts = d["shortcuts"]
     current_id = len(shortcuts)
+    app_id = (-99999999 - len(list(shortcuts.keys()))) if shortcuts.keys() else -99999999
 
-    for key in roms.copy():
-        roms[str(current_id)] = roms[key]
+    new_roms = {}
+    for key in roms:
+        new_roms[str(current_id)] = roms[key]
+        new_roms[str(current_id)]["appid"] = app_id
         current_id += 1
+        app_id -= 1
 
-    shortcuts.update(roms)
+    shortcuts.update(new_roms)
     return d
 
 def write_to_steam(shortcuts):

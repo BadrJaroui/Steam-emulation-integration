@@ -51,18 +51,16 @@ def generateShortcut(entry_id, app_id, name, launch_cmd, start_dir):
 def create_shortcuts(roms: list[dict[str, str, str]]):
     entries = {}
     entry_counter = 0
-    appid_counter = -99999999
     for rom in roms:
         launch_cmds_copy = list(rom["launch_cmd"])
         launch_cmds_copy = replace_launch_cmd_placeholders(launch_cmds_copy, 
                             rom["rom_name"], config["paths"]["retroarch_path"])
         entries.update(generateShortcut(
                         entry_id=str(entry_counter),
-                        app_id=appid_counter,
+                        app_id=0,
                         name=format_title(rom["rom_name"]),
                         launch_cmd=format_launch_cmd(launch_cmds_copy),
                         start_dir=get_parent_folder(rom["rom_name"])
                     ))
         entry_counter += 1
-        appid_counter -= 1
     return entries

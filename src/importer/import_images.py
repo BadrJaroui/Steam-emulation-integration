@@ -9,8 +9,6 @@ LOGO_EXTENSION = "_logo"
 config = fetch_config()
 
 def import_images(rom):
-    # steam_id should be get_steam_id(steam_directory)
-    # image_id should be to_unassigned(app_id)
     user_id = get_steam_id()
     image_id = to_unsigned(rom["appid"])
 
@@ -28,3 +26,4 @@ def import_images(rom):
 
     cover_url = fetch_images.fetch_game_logo(game)
     fetch_images.write_image(cover_url, f"{path}/{image_id}{LOGO_EXTENSION}.png")
+    print(f"Wrote artwork for game ID {rom["appid"]} and image ID {image_id}")
