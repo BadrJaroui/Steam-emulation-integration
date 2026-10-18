@@ -24,7 +24,7 @@ def get_emulator_from_folder_name(rom_dir):
 def is_valid_rom(rom, valid_extensions):
     if not Path(rom).is_file():
         return False
-    if str(rom).split(".")[-1] not in valid_extensions:
+    if Path(rom).suffix.replace(".", "") not in valid_extensions:
         return False
     return True
 
