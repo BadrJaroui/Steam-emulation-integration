@@ -1,0 +1,17 @@
+{
+    "nes": ["nes", "nintendo entertainment system", "famicom", "nintendo family computer", "hyundai comboy", "comboy"],
+    "snes": ["snes", "super nintendo entertainment system", "super nes", 
+            "super nintendo", "sfc", "super famicom", "super fc", "hyundai super comboy", "hyundai sc", "super comboy"],
+    "n64": ["n64", "nintendo 64", "hyundai comboy 64", "comboy 64"],
+    "gc": ["nintendo gamecube", "gamecube", "gc", "gcn", "ngc"],
+    "wii": ["nintendo wii", "wii"],
+    "gb": ["gb", "nintendo gameboy", "gameboy", "ngb"],
+    "gbc": ["gbc", "nintendo gameboy color", "gameboy color", "ngbc"],
+    "gba": ["gba", "nintendo gameboy advance", "gameboy advance", "ngba"],
+    "nds": ["nds", "nintendo ds", "ds", "ndsi", "nintendo dsi", "dsi", "nds lite", "nintendo ds lite", "ds lite"],
+    "genesis": ["sega genesis", "genesis", "sega mega drive", "mega drive", "sega md", "md"],
+    "dreamcast": ["dreamcast", "sega dreamcast", "sega dc", "dc"],
+    "ps1": ["ps1", "playstation", "sony playstation", "sony playstation 1", "sony ps1", "sony ps", "sony psx", "psx", "ps one", "ps"],
+    "ps2": ["ps2", "sony playstation 2", "sony ps2", "ps two", "playstation 2"],
+    "xbox": ["xbox", "microsoft xbox", "ms xbox", "original xbox", "og xbox", "xbox classic"]
+}

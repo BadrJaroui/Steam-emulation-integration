@@ -1,0 +1,4 @@
+[paths]
+steam_path = 'C:/Program Files (x86)/Steam'
+retroarch_path = 'D:/Emulation/Emulators/RetroArch'
+roms_path = 'D:/Emulation/ROMs'

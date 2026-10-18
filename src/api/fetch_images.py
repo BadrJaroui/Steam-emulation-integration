@@ -12,7 +12,8 @@ def fetch_game(name):
     if not games:
         print(f"{name} not found")
         return
-    return games[0]
+    game_id = games[0]
+    return game_id
 
 def fetch_game_grids(game_id):
     return sgdb.get_grids_by_gameid(game_ids=[game_id])
