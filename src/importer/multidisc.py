@@ -1,6 +1,5 @@
-from utils.load_data import fetch_emulators
 from pathlib import Path
-import sys
+
 
 def format_rom(rom_path):
     return Path(rom_path).stem.split(" (")[0]
@@ -32,7 +31,7 @@ def get_multidisc_roms(folder, emulator):
     if roms is None:
         return
     for rom in roms:
-        if "disc" in rom.lower() and Path(rom).suffix.replace(".", "") in emulator[1]["extensions"]:
+        if "disc" in rom.lower() and Path(rom).suffix in emulator[1]["extensions"]:
             if not format_rom(rom) in titles:
                 titles[format_rom(rom)] = [rom]
                 continue

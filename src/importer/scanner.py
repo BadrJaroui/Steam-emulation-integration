@@ -24,9 +24,17 @@ def get_emulator_from_folder_name(rom_dir):
 def is_valid_rom(rom, valid_extensions):
     if not Path(rom).is_file():
         return False
-    if Path(rom).suffix.replace(".", "") not in valid_extensions:
+    if Path(rom).suffix not in valid_extensions:
         return False
     return True
+
+def is_rom_to_ignore(rom, roms_to_ignore):
+    if not roms_to_ignore: return False
+    if not rom.suffix == ".m3u":
+        for ignored_rom in roms_to_ignore:
+            if ignored_rom in str(rom):
+                return True
+    return False
 
 def scan_folder(rom_dir, roms_to_ignore=None):
     roms_data = []
@@ -35,18 +43,11 @@ def scan_folder(rom_dir, roms_to_ignore=None):
         return None
 
     for rom in Path(rom_dir).rglob('*'):
-        ignored_rom_found = False
-        if roms_to_ignore:
-            if not rom.suffix.replace(".", "") == "m3u":
-                for ignored_rom in roms_to_ignore:
-                    if ignored_rom in str(rom):
-                        ignored_rom_found = True
-                        break
-            if ignored_rom_found:
-                continue
+        if (is_valid_rom(rom, emulator_data[1]["extensions"]) 
+            and not is_rom_to_ignore(rom, roms_to_ignore)):
 
-        if is_valid_rom(rom, emulator_data[1]["extensions"]):
             roms_data.append({"rom_name": str(rom), 
                             "emulator_path": emulator_data[1]["path"],
                             "launch_cmd": emulator_data[1]["launch_cmd"]})
     return roms_data
+
