@@ -10,12 +10,12 @@ from pathlib import Path
 def script():
     config = fetch_config()
 
-    for folder in Path.iterdir(Path(config["paths"]["roms_path"])):
-
+    for folder in Path(config["paths"]["roms_path"]).rglob('*'):
+        print(f"Looking through {folder}...")
         # Create m3u playlists for multidisc games if applicable
         emulator = scanner.get_emulator_from_folder_name(folder)
         multidisc_roms = None
-        if not emulator is None:
+        if not emulator is None and emulator[1]["multi_disc"] is True:
             multidisc_roms = multidisc.create_playlists(folder, emulator)
 
         # Fetches roms
@@ -34,5 +34,5 @@ def script():
     d = fetch_shortcuts()
     shortcuts = d["shortcuts"]
     for key in shortcuts:
-        print(f"Fetching artwork for {shortcuts[key]["appname"]}")
+        print(f"Fetching artwork for {shortcuts[key]["appname"]}...")
         images.import_images(shortcuts[key])

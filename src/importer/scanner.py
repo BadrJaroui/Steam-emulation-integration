@@ -37,8 +37,7 @@ def is_rom_to_ignore(rom, roms_to_ignore):
     return False
 
 def format_rom_data(container, rom, emulator_data):
-    container.append({"rom_name": str(rom), 
-                "emulator_path": emulator_data[1]["path"],
+    container.append({"rom_name": str(rom),
                 "launch_cmd": emulator_data[1]["launch_cmd"]})
 
 def scan_folder(rom_dir, roms_to_ignore=None):

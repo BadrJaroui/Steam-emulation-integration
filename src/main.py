@@ -6,13 +6,11 @@ def main():
 if __name__ == "__main__":
     main()
 
-# TODO: fix playlists folder creation in every roms directory
-# TODO: non-retroarch emulators support
-# TODO: multidisc support
+# DONE: fix playlists folder creation in every roms directory
+# DONE: multidisc support
 # TODO: add emulators & launch commands manually
 # TODO: add folders for scanning manually
-# TODO: remove hardcoded emulator/retroarch paths in emulators.json
-# TODO: loop through folders recursively
+# DONE: loop through folders recursively
 
 # TODO: CLI:
 # - Allow user to manually select a folder for scanning
