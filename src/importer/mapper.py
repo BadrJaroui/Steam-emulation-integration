@@ -1,15 +1,14 @@
-from steam.steam_helpers import fetch_shortcuts
 from utils.load_data import fetch_config
 from pathlib import Path
 
 config = fetch_config()
 
-def replace_launch_cmd_placeholders(launch_cmd, rom_path, retroarch_dir):
+def replace_launch_cmd_placeholders(launch_cmd, rom_path):
     for i in range(len(launch_cmd)):
         if "%ROM_PATH%" in launch_cmd[i]:
             launch_cmd[i] = launch_cmd[i].replace("%ROM_PATH%", rom_path)
         if "%RETROARCH_DIR%" in launch_cmd[i]:
-            launch_cmd[i] = launch_cmd[i].replace("%RETROARCH_DIR%", retroarch_dir)
+            launch_cmd[i] = launch_cmd[i].replace("%RETROARCH_DIR%", config["paths"]["retroarch_path"])
 
     return launch_cmd
 
@@ -54,7 +53,7 @@ def create_shortcuts(roms: list[dict[str, str, str]]):
     for rom in roms:
         launch_cmds_copy = list(rom["launch_cmd"])
         launch_cmds_copy = replace_launch_cmd_placeholders(launch_cmds_copy, 
-                            rom["rom_name"], config["paths"]["retroarch_path"])
+                            rom["rom_name"])
         entries.update(generateShortcut(
                         entry_id=str(entry_counter),
                         app_id=0,

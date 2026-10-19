@@ -1,110 +1,130 @@
 {
     "gb": {
-        "path": "D:/Emulation/Emulators/RetroArch/cores/mgba_libretro.dll",
         "launch_cmd": [
             "%RETROARCH_DIR%/retroarch.exe",
             "-L",
             "%RETROARCH_DIR%/cores/mgba_libretro.dll",
             "%ROM_PATH%"
         ],
-        "extensions": ["gb"]
+        "extensions": [".gb"],
+        "multi_disc": false
     },
     "gba": {
-        "path": "D:/Emulation/Emulators/RetroArch/cores/mgba_libretro.dll",
         "launch_cmd": [
             "%RETROARCH_DIR%/retroarch.exe",
             "-L",
             "%RETROARCH_DIR%/cores/mgba_libretro.dll",
             "%ROM_PATH%"
         ],
-        "extensions": ["gba"]
+        "extensions": [".gba"],
+        "multi_disc": false
     },
     "gbc": {
-        "path": "D:/Emulation/Emulators/RetroArch/cores/mgba_libretro.dll",
         "launch_cmd": [
             "%RETROARCH_DIR%/retroarch.exe",
             "-L",
             "%RETROARCH_DIR%/cores/mgba_libretro.dll",
             "%ROM_PATH%"
         ],
-        "extensions": ["gbc"]
+        "extensions": [".gbc"],
+        "multi_disc": false
     },
     "n64": {
-        "path": "D:/Emulation/Emulators/RetroArch/cores/mupen64plus_next_libretro.dll",
         "launch_cmd": [
             "%RETROARCH_DIR%/retroarch.exe",
             "-L",
             "%RETROARCH_DIR%/cores/mupen64plus_next_libretro.dll",
             "%ROM_PATH%"
         ],
-        "extensions": ["z64", "n64", "v64"]
+        "extensions": [".z64", ".n64", ".v64"],
+        "multi_disc": false
     },
     "nds": {
-        "path": "D:/Emulation/Emulators/RetroArch/cores/melonds_libretro.dll",
-        "launch_cmd": [],
-        "extensions": ["nds", "srl"]
+        "launch_cmd": [
+            "%RETROARCH_DIR%/retroarch.exe",
+            "-L",
+            "%RETROARCH_DIR%/cores/melondsds_libretro.dll",
+            "%ROM_PATH%"
+        ],
+        "extensions": [".nds", ".srl"],
+        "multi_disc": false
     },
     "nes": {
-        "path": "D:/Emulation/Emulators/RetroArch/cores/mesen_libretro.dll",
         "launch_cmd": [
             "%RETROARCH_DIR%/retroarch.exe",
             "-L",
             "%RETROARCH_DIR%/cores/mesen_libretro.dll",
             "%ROM_PATH%"
         ],
-        "extensions": ["nes"]
+        "extensions": [".nes"],
+        "multi_disc": false
     },
     "ps1": {
-        "path": "D:/Emulation/Emulators/RetroArch/cores/swanstation_libretro.dll",
-        "launch_cmd": [],
-        "extensions": []
+        "launch_cmd": [
+            "%RETROARCH_DIR%/retroarch.exe",
+            "-L",
+            "%RETROARCH_DIR%/cores/mesen_libretro.dll",
+            "%ROM_PATH%"
+        ],
+        "extensions": [".cue", ".chd", ".pbp", ".m3u"],
+        "multi_disc": true
+    },
+    "dreamcast": {
+        "launch_cmd": [
+            "%RETROARCH_DIR%/retroarch.exe",
+            "-L",
+            "%RETROARCH_DIR%/cores/flycast_libretro.dll",
+            "%ROM_PATH%"
+        ],
+        "extensions": [".cue", ".chd", ".pbp", ".m3u"],
+        "multi_disc": true
     },
     "genesis": {
-        "path": "D:/Emulation/Emulators/RetroArch/cores/genesis_plus_gx_libretro.dll",
         "launch_cmd": [
             "%RETROARCH_DIR%/retroarch.exe",
             "-L",
             "%RETROARCH_DIR%/cores/genesis_plus_gx_libretro.dll",
             "%ROM_PATH%"
         ],
-        "extensions": ["bin", "md", "gen", "smd"]
+        "extensions": [".bin", ".md", ".gen", ".smd"],
+        "multi_disc": false
     },
     "snes": {
-        "path": "D:/Emulation/Emulators/RetroArch/cores/snes9x_libretro.dll",
         "launch_cmd": [
             "%RETROARCH_DIR%/retroarch.exe",
             "-L",
             "%RETROARCH_DIR%/cores/snes9x_libretro.dll",
             "%ROM_PATH%"
         ],
-        "extensions": ["sfc", "smc", ""]
+        "extensions": [".sfc", ".smc"],
+        "multi_disc": false
     },
     "wii": {
-        "path": "D:/Emulation/Emulators/Dolphin/Dolphin.exe",
         "launch_cmd": [
             "%EMULATOR_PATH%",
             "%ROM_PATH%",
             "/f"
         ],
-        "extensions": ["iso", "wbfs", "rvz"]
+        "extensions": [".iso", ".wbfs", ".rvz"],
+        "multi_disc": false
     },
     "gc": {
-        "path": "D:/Emulation/Emulators/Dolphin/Dolphin.exe",
         "launch_cmd": [
             "%EMULATOR_PATH%",
             "%ROM_PATH%",
             "/f"
         ],
-        "extensions": ["iso", "gcz", "rvz"]
+        "extensions": [".iso", ".gcz", ".rvz", ".m3u"],
+        "multi_disc": true
     },
     "ps2": {
-        "path": "D:/Emulation/Emulators/PCSX2/pcsx2-qt.exe",
         "launch_cmd": [
             "%EMULATOR_PATH%",
             "%ROM_PATH%",
             "-nogui",
             "-fullscreen"
         ],
-        "extensions": ["iso", "chd", "cso", "zso"]
+        "extensions": [".iso", ".chd", ".cso", ".zso", ".cue"],
+        "multi_disc": false
     }
 }
