@@ -10,7 +10,7 @@ from pathlib import Path
 def script():
     config = fetch_config()
 
-    for folder in Path(config["paths"]["roms_path"]).rglob('*'):
+    for folder in Path(config["paths"]["roms_path"]).iterdir():
         print(f"Looking through {folder}...")
         # Create m3u playlists for multidisc games if applicable
         emulator = scanner.get_emulator_from_folder_name(folder)
