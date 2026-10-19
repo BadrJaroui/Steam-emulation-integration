@@ -6,6 +6,7 @@ def main():
 if __name__ == "__main__":
     main()
 
+# TODO: fix playlists folder creation in every roms directory
 # TODO: non-retroarch emulators support
 # TODO: multidisc support
 # TODO: add emulators & launch commands manually

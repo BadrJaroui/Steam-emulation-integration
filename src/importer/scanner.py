@@ -36,6 +36,11 @@ def is_rom_to_ignore(rom, roms_to_ignore):
                 return True
     return False
 
+def format_rom_data(container, rom, emulator_data):
+    container.append({"rom_name": str(rom), 
+                "emulator_path": emulator_data[1]["path"],
+                "launch_cmd": emulator_data[1]["launch_cmd"]})
+
 def scan_folder(rom_dir, roms_to_ignore=None):
     roms_data = []
     emulator_data = get_emulator_from_folder_name(rom_dir)
@@ -46,8 +51,6 @@ def scan_folder(rom_dir, roms_to_ignore=None):
         if (is_valid_rom(rom, emulator_data[1]["extensions"]) 
             and not is_rom_to_ignore(rom, roms_to_ignore)):
 
-            roms_data.append({"rom_name": str(rom), 
-                            "emulator_path": emulator_data[1]["path"],
-                            "launch_cmd": emulator_data[1]["launch_cmd"]})
+            format_rom_data(roms_data, rom, emulator_data)
     return roms_data
 

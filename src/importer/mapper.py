@@ -1,4 +1,3 @@
-from steam.steam_helpers import fetch_shortcuts
 from utils.load_data import fetch_config
 from pathlib import Path
 

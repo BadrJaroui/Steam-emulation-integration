@@ -1,5 +1,5 @@
-from utils.load_data import fetch_config
 from steam.steam_helpers import fetch_shortcuts
+from utils.load_data import fetch_config
 import importer.scanner as scanner
 import importer.mapper as mapper
 import importer.writer as writer
@@ -31,8 +31,8 @@ def script():
         writer.write_to_steam(corrected_roms)
 
     # Checks for (missing) artwork and imports images
-    # d = fetch_shortcuts()
-    # shortcuts = d["shortcuts"]
-    # for key in shortcuts:
-    #     print(f"Fetching artwork for {shortcuts[key]}")
-    #     images.import_images(shortcuts[key])
+    d = fetch_shortcuts()
+    shortcuts = d["shortcuts"]
+    for key in shortcuts:
+        print(f"Fetching artwork for {shortcuts[key]["appname"]}")
+        images.import_images(shortcuts[key])

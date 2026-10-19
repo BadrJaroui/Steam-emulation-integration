@@ -1,6 +1,5 @@
 from pathlib import Path
 
-
 def format_rom(rom_path):
     return Path(rom_path).stem.split(" (")[0]
 
@@ -14,16 +13,6 @@ def get_playlist_names(folder):
         if file.suffix == ".m3u":
             playlists.append(format_rom(file))
     return playlists
-
-def get_roms_without_playlist(folder):
-    roms = get_roms(folder)
-    roms_copy = roms.copy()
-    playlists = get_playlist_names(folder)
-    for rom in roms:
-        for playlist in playlists:
-            if playlist in rom and rom in roms_copy:
-                roms_copy.remove(rom)
-    return roms_copy
 
 def get_multidisc_roms(folder, emulator):
     titles = {}
@@ -39,10 +28,17 @@ def get_multidisc_roms(folder, emulator):
                 titles[format_rom(rom)].append(rom)
     return titles
 
+def get_first_discs(folder, emulator):
+    first_discs = []
+    roms = get_multidisc_roms(folder, emulator)
+    for key in roms:
+        first_discs.append(roms[key])
+    return first_discs
+
 def create_playlists(folder, emulator):
     roms = get_multidisc_roms(folder, emulator)
-    if roms is None:
-        return
+    if roms is None or emulator[0] == "ps2":
+        return None
     playlists_dir = Path(f"{folder}/Playlists")
     if not playlists_dir.exists():
         Path.mkdir(f"{folder}/Playlists")
