@@ -124,7 +124,7 @@
             "-nogui",
             "-fullscreen"
         ],
-        "extensions": [".iso", ".chd", ".cso", ".zso"],
+        "extensions": [".iso", ".chd", ".cso", ".zso", ".cue"],
         "multi_disc": false
     }
 }
